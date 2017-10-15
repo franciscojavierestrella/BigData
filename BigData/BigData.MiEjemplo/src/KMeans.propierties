@@ -1,0 +1,9 @@
+numeroClusters=5
+numeroIteraciones=5
+AppName=AppKMeansCluster
+ModeloPredictivo=false
+ficherodatos=F:\\Spark\\spark-2.1.1-bin-hadoop2.7\\data\\DatosINEx26.csv
+ficheroModelo=F:\\Spark\\spark-2.1.1-bin-hadoop2.7\\Predictivos\\KMeansModel_200
+#ficherodatos=.//data//Datos3.csv
+#ficheroModelo=.//Predictivos//KMeansModel_33
+
