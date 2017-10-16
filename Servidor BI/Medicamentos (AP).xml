@@ -1,0 +1,178 @@
+<Schema name="Medicamentos" description="Esquema proyecto medicamentos">
+  <Dimension type="TimeDimension" visible="true" highCardinality="false" name="Tiempo">
+    <Hierarchy name="A&#241;o -&#62; Trimestre" visible="true" hasAll="true" primaryKey="IdFecha">
+      <Table name="fechas">
+      </Table>
+      <Level name="A&#241;o" visible="true" table="fechas" column="Anio" nameColumn="Anio" type="Numeric" uniqueMembers="true" levelType="TimeYears" hideMemberIf="IfBlankName" captionColumn="Anio">
+      </Level>
+      <Level name="Trimestre" visible="true" table="fechas" column="Trimestre" nameColumn="Trimestre" type="Integer" uniqueMembers="true" levelType="TimeQuarters" hideMemberIf="IfBlankName" captionColumn="Trimestre">
+      </Level>
+      <Level name="Mes" visible="true" table="fechas" column="Mes" nameColumn="Mes" type="Numeric" uniqueMembers="true" levelType="TimeMonths" hideMemberIf="IfBlankName" captionColumn="Mes">
+      </Level>
+    </Hierarchy>
+  </Dimension>
+  <Dimension type="StandardDimension" visible="true" highCardinality="false" name="Medicamentos">
+    <Hierarchy name="Farmacos" visible="true" hasAll="true" primaryKey="IdFarmaco" primaryKeyTable="FARMACO">
+      <Join leftKey="IdDosis" rightKey="IdDosis">
+        <Table name="FARMACO">
+        </Table>
+        <Table name="DOSIS">
+        </Table>
+      </Join>
+      <Level name="Dosis" visible="true" table="DOSIS" column="Nombre" nameColumn="Nombre" type="String" uniqueMembers="true" levelType="Regular" hideMemberIf="Never" captionColumn="Nombre">
+        <Property name="Valor Dosis" column="ValorDosis" type="Numeric">
+        </Property>
+      </Level>
+      <Level name="Medicamento" visible="true" table="FARMACO" column="Nombre" nameColumn="Nombre" type="String" uniqueMembers="true" levelType="Regular" hideMemberIf="Never" captionColumn="Nombre">
+      </Level>
+    </Hierarchy>
+  </Dimension>
+  <Dimension type="StandardDimension" visible="true" highCardinality="false" name="Enfermedades">
+    <Hierarchy name="Enfermedades" visible="true" hasAll="true" primaryKey="IdEnfermedad">
+      <Table name="enfermedad">
+      </Table>
+      <Level name="Enfermedad" visible="true" table="enfermedad" column="Nombre" nameColumn="Nombre" type="String" uniqueMembers="true" levelType="Regular" hideMemberIf="IfBlankName" captionColumn="Nombre">
+      </Level>
+    </Hierarchy>
+  </Dimension>
+  <Dimension type="StandardDimension" visible="true" highCardinality="false" name="CCAA">
+    <Hierarchy name="CCAA" visible="true" hasAll="true" primaryKey="IdCCAA">
+      <Table name="ccaa">
+      </Table>
+      <Level name="Comunidad Autonoma" visible="true" table="ccaa" column="Nombre" nameColumn="Nombre" type="String" uniqueMembers="true" levelType="Regular" hideMemberIf="Never" captionColumn="Nombre">
+      </Level>
+    </Hierarchy>
+  </Dimension>
+  <Dimension type="StandardDimension" visible="true" highCardinality="false" name="Provincias">
+    <Hierarchy name="Provincias" visible="true" hasAll="true" primaryKey="IdProvincia">
+      <Table name="provincia">
+      </Table>
+      <Level name="Provincia" visible="true" table="provincia" column="Nombre" nameColumn="Nombre" type="String" uniqueMembers="true" levelType="Regular" hideMemberIf="Never" captionColumn="Nombre">
+      </Level>
+    </Hierarchy>
+  </Dimension>
+  <Dimension type="StandardDimension" visible="true" highCardinality="false" name="Sexo">
+    <Hierarchy name="Sexo" visible="true" hasAll="true" primaryKey="IdPaciente">
+      <Table name="paciente">
+      </Table>
+      <Level name="Sexo" visible="true" table="paciente" column="Sexo" nameColumn="Sexo" type="String" uniqueMembers="false" levelType="Regular" hideMemberIf="IfBlankName" captionColumn="Sexo">
+      </Level>
+    </Hierarchy>
+  </Dimension>
+  <Dimension type="StandardDimension" visible="true" highCardinality="false" name="Edad">
+    <Hierarchy name="Edad" visible="true" hasAll="true" primaryKey="IdPaciente">
+      <Table name="paciente">
+      </Table>
+      <Level name="Edad" visible="true" table="paciente" column="Edad" nameColumn="Edad" type="Numeric" uniqueMembers="true" levelType="Regular" hideMemberIf="IfBlankName" captionColumn="Edad">
+      </Level>
+    </Hierarchy>
+  </Dimension>
+  <Dimension type="StandardDimension" visible="true" highCardinality="false" name="Estado Pacientes">
+    <Hierarchy name="Estado" visible="true" hasAll="true" primaryKey="IdEstado">
+      <Table name="estado">
+      </Table>
+      <Level name="Estado" visible="true" table="estado" column="Nombre" nameColumn="Nombre" type="String" uniqueMembers="true" levelType="Regular" hideMemberIf="IfBlankName" captionColumn="Nombre">
+      </Level>
+    </Hierarchy>
+  </Dimension>
+  <Cube name="An&#225;lisis Econ&#243;mico" visible="true" cache="true" enabled="true">
+    <Table name="estudiosfact">
+    </Table>
+    <DimensionUsage source="Tiempo" name="Tiempo" visible="true" foreignKey="IdFecha" highCardinality="false">
+    </DimensionUsage>
+    <DimensionUsage source="CCAA" name="CCAA" visible="true" foreignKey="IdCCAA" highCardinality="false">
+    </DimensionUsage>
+    <DimensionUsage source="Provincias" name="Provincia" visible="true" foreignKey="IdProvincia" highCardinality="false">
+    </DimensionUsage>
+    <DimensionUsage source="Enfermedades" name="Enfermedades" visible="true" foreignKey="IdEnfermedad" highCardinality="false">
+    </DimensionUsage>
+    <Dimension type="StandardDimension" visible="true" foreignKey="IdFarmaco" highCardinality="false" name="Farmaco">
+      <Hierarchy name="Farmacos" visible="true" hasAll="true" primaryKey="IdFarmaco">
+        <Table name="farmaco">
+        </Table>
+        <Level name="C&#243;digo Farmaco" visible="true" table="farmaco" column="Nombre" nameColumn="Nombre" type="String" uniqueMembers="true" levelType="Regular" hideMemberIf="Never" captionColumn="Nombre">
+        </Level>
+      </Hierarchy>
+    </Dimension>
+    <DimensionUsage source="Estado Pacientes" name="Estado Paciente" visible="true" foreignKey="IdEstado" highCardinality="false">
+    </DimensionUsage>
+    <Measure name="Coste Tratamiento" column="CosteTratamiento" datatype="Integer" aggregator="sum" caption="Coste Tratamiento" visible="true">
+    </Measure>
+    <Measure name="Duracion Tratamiento" column="DuracionTratamiento" datatype="Integer" aggregator="sum" visible="true">
+    </Measure>
+    <CalculatedMember name="% Efectividad Inversi&#243;n" dimension="Measures" visible="true">
+      <Formula>
+        <![CDATA[IIF( [Estado Paciente].CurrentMember.Level.Name = "Estado" ,( [Measures].[Coste Tratamiento] / SUM(  [Measures].[Coste Tratamiento], [Estado Paciente.Estado].[All Estado Paciente.Estados].CurrentMember.Parent)  ) * 100 , NULL)]]>
+      </Formula>
+    </CalculatedMember>
+  </Cube>
+  <Cube name="An&#225;lisis Medicamentos" visible="true" cache="true" enabled="true">
+    <Table name="estudiosfact">
+    </Table>
+    <DimensionUsage source="Tiempo" name="Tiempo" visible="true" foreignKey="IdFecha" highCardinality="false">
+    </DimensionUsage>
+    <DimensionUsage source="CCAA" name="Comunidad Autonoma" visible="true" foreignKey="IdCCAA" highCardinality="false">
+    </DimensionUsage>
+    <DimensionUsage source="Provincias" name="Provincias" visible="true" foreignKey="IdProvincia" highCardinality="false">
+    </DimensionUsage>
+    <DimensionUsage source="Enfermedades" name="Enfermedad" visible="true" foreignKey="IdEnfermedad" highCardinality="false">
+    </DimensionUsage>
+    <DimensionUsage source="Medicamentos" name="Dosis Medicamentos" visible="true" foreignKey="IdFarmaco" highCardinality="false">
+    </DimensionUsage>
+    <DimensionUsage source="Estado Pacientes" name="Estado Paciente" visible="true" foreignKey="IdEstado" highCardinality="false">
+    </DimensionUsage>
+    <Measure name="Duracion Tratamiento" column="DuracionTratamiento" datatype="Numeric" aggregator="sum" visible="true">
+    </Measure>
+    <CalculatedMember name="Dosis Medicamentos" formula="IIF( [Dosis Medicamentos].CurrentMember.Level.Name = &#34;Dosis&#34; ,([Measures].[Duracion Tratamiento] * [Dosis Medicamentos].[Dosis].CurrentMember.Properties(&#34;Valor Dosis&#34;)), NULL)" dimension="Measures" visible="true">
+    </CalculatedMember>
+    <CalculatedMember name="% Efectividad Dosis" formula="IIF( [Estado Paciente].CurrentMember.Level.Name = &#34;Estado&#34; ,( [Measures].[Dosis Medicamentos] / SUM(  [Measures].[Dosis Medicamentos], [Estado Paciente.Estado].[All Estado Paciente.Estados].CurrentMember.Parent)  ) * 100 , NULL)" dimension="Measures" visible="true">
+    </CalculatedMember>
+  </Cube>
+  <Cube name="An&#225;lisis Pacientes" visible="true" cache="true" enabled="true">
+    <Table name="estudiosfact">
+    </Table>
+    <DimensionUsage source="Tiempo" name="Tiempo" visible="true" foreignKey="IdFecha" highCardinality="false">
+    </DimensionUsage>
+    <DimensionUsage source="CCAA" name="CCAA" visible="true" foreignKey="IdCCAA" highCardinality="false">
+    </DimensionUsage>
+    <DimensionUsage source="Provincias" name="Provincia" visible="true" foreignKey="IdProvincia" highCardinality="false">
+    </DimensionUsage>
+    <DimensionUsage source="Enfermedades" name="Enfermedades" visible="true" foreignKey="IdEnfermedad" highCardinality="false">
+    </DimensionUsage>
+    <DimensionUsage source="Sexo" name="Sexo" visible="true" foreignKey="IdPaciente" highCardinality="false">
+    </DimensionUsage>
+    <DimensionUsage source="Edad" name="Edad" visible="true" foreignKey="IdPaciente" highCardinality="false">
+    </DimensionUsage>
+    <DimensionUsage source="Medicamentos" name="Dosis Medicamentos" visible="true" foreignKey="IdFarmaco" highCardinality="false">
+    </DimensionUsage>
+    <DimensionUsage source="Estado Pacientes" name="Estado Paciente" visible="true" foreignKey="IdEstado" highCardinality="false">
+    </DimensionUsage>
+    <Measure name="Numero de Pacientes" datatype="Numeric" aggregator="count" visible="false">
+      <MeasureExpression>
+        <SQL dialect="generic">
+          <![CDATA[(case when estudiosfact.IdPaciente > 0 then 1 else 0 end)]]>
+        </SQL>
+      </MeasureExpression>
+    </Measure>
+    <Measure name="Placebo" datatype="Integer" aggregator="sum" visible="false">
+      <MeasureExpression>
+        <SQL dialect="generic">
+          <![CDATA[(case when estudiosfact.placebo = 'Y' then 1 else 0 end)]]>
+        </SQL>
+      </MeasureExpression>
+    </Measure>
+    <Measure name="Diagnosticados" datatype="Integer" aggregator="sum" visible="false">
+      <MeasureExpression>
+        <SQL dialect="generic">
+          <![CDATA[(case when estudiosfact.diagnosticado = 'Y' then 1 else 0 end)]]>
+        </SQL>
+      </MeasureExpression>
+    </Measure>
+    <CalculatedMember name="% Tratamiento" formula="IIF( [Estado Paciente].CurrentMember.Level.Name = &#34;Estado&#34; ,( [Measures].[Numero de Pacientes] / SUM(  [Measures].[Numero de Pacientes], [Estado Paciente.Estado].[All Estado Paciente.Estados].CurrentMember.Parent)  ) * 100 , NULL)" dimension="Measures" visible="false">
+    </CalculatedMember>
+    <CalculatedMember name="% Placebos" formula="IIF( [Estado Paciente].CurrentMember.Level.Name = &#34;Estado&#34; ,( [Measures].[Placebo] / SUM(  [Measures].[Placebo], [Estado Paciente.Estado].[All Estado Paciente.Estados].CurrentMember.Parent)  ) * 100 , NULL)" dimension="Measures" visible="true">
+    </CalculatedMember>
+    <CalculatedMember name="%Diagnosticados" formula="IIF( [Estado Paciente].CurrentMember.Level.Name = &#34;Estado&#34; ,( [Measures].[Diagnosticados] / SUM(  [Measures].[Diagnosticados], [Estado Paciente.Estado].[All Estado Paciente.Estados].CurrentMember.Parent)  ) * 100 , NULL)" dimension="Measures" visible="false">
+    </CalculatedMember>
+  </Cube>
+</Schema>
